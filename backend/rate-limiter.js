@@ -44,7 +44,7 @@ const rateLimitCache = {
 }.init();
 
 function rateLimiter(req, res, next) {
-  // assume we don't need to tenantId any other way other than header of x-tenant-id
+  // assume we don't need to identify tenantId through alternative methods than x-tenant-id header
   const tenantId = req.headers["x-tenant-id"];
 
   if (!tenantId) {
