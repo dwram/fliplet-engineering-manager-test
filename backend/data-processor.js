@@ -12,16 +12,39 @@ async function fetchUserData(id) {
 
 // Optimize this function:
 async function processUsers(users) {
+  const emailMap = new Map();
   let results = [];
-  for (let i = 0; i < users.length; i++) {
-    let user = users[i];
-    if (!user.email) {
-      let enriched = await fetchUserData(user.id);
-      user.email = enriched.email;
+  const length = users.length;
+
+  for (let i = 0; i < length; i++) {
+    const user = users[i];
+    if (user.email) {
+
+      if (!emailMap.has(user.email)) {
+        emailMap.set(user.email, true);
+        results.push({ ...user });
+      }
+
+    } else {
+      const promise = fetchUserData(user.id).then(userData => {
+        const email = userData.email;
+        if (!emailMap.has(email)) {
+          emailMap.set(email, true);
+          return { ...user, email };
+        }
+      });
+      results.push(promise);
     }
-    results.push(user);
   }
-  return results;
+
+  return await Promise.all(results);
+
 }
+
+/*
+Assumptions:
+email is the unique identifier for a user across apis
+the api called returns an object with a key called email whose value represents the identifier
+ */
 
 module.exports = processUsers;
