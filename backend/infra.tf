@@ -116,7 +116,7 @@ resource "aws_ecs_cluster" "main" {
   name = "app-cluster"
 }
 
-# Use existing role if pressed for time
+# I was pressed for time =l
 data "aws_iam_role" "execution_role" {
   name = "ecsTaskExecutionRole"  # This assumes the AWS-managed role exists
 }
