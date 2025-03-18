@@ -12,7 +12,7 @@ const rateLimitCache = {
     const now = Date.now();
     Object.keys(this.limits).forEach(key => {
       const tenant = this.limits[key];
-      // Remove if last request was more than 1 minutes ago
+      // Remove if last request was more than 1 minute ago
       const REQUEST_STORE_IN_MS = 60 * 1000 // Preferably set in global config
       if (now - tenant.lastRequest > REQUEST_STORE_IN_MS) {
         delete this.limits[key];
